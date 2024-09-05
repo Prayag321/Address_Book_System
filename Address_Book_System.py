@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 05-09-2024
-  @Title : Address book problem uc3-Ability to edit existing contact by name
+  @Title : Address book problem uc4-Ability to delete contact by name
 """
 class Contact:
     def __init__(self, first_name, last_name, city, state, zip_code, phone, email):
@@ -142,6 +142,29 @@ class AddressBook:
         else:
             print("Contact not found.")
 
+    def delete_contact_by_name(self):
+          """
+          Description:
+            Deletes a contact from the address book by name.
+
+          Parameters:
+            None
+
+          Returns:
+            None
+          """
+          first_name = input("Enter the first name of the contact to delete: ")
+          last_name = input("Enter the last name of the contact to delete: ")
+
+          contact = self.find_contact_by_name(first_name, last_name)
+
+          if contact:
+              self.contacts.remove(contact)
+              print(f"Contact {first_name} {last_name} deleted successfully!")
+          else:
+              print("Contact not found.")
+
+
 def get_contact_details():
     """
     Description:
@@ -170,8 +193,9 @@ def main():
       print("1. Add New Contact")
       print("2. Display All Contacts")
       print("3. Edit a Contact")
-      print("4. Exit")
-      choice = input("Enter your choice (1-4): ")
+      print("4. Delete a Contact")
+      print("5. Exit")
+      choice = input("Enter your choice (1-5): ")
 
       if choice == '1':
           # Add new contact
@@ -185,11 +209,15 @@ def main():
           # Edit an existing contact
           address_book.edit_contact_by_name()
       elif choice == '4':
+          # Delete an existing contact
+          address_book.delete_contact_by_name()
+      elif choice == '5':
           # Exit the program
           print("Exiting Address Book.")
           break
       else:
           print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
