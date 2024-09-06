@@ -49,6 +49,22 @@ def is_email_valid(email):
     logging.info(f"Validating email: {email} - {'Valid' if valid else 'Invalid'}")
     return valid
 
+def is_address_valid(address):
+    """
+    Description:
+      Validates the address input.
+
+    Parameters:
+      address (str): The address to be validated.
+
+    Returns:
+      bool: True if the address is valid, otherwise False.
+    """
+    pattern = r"^[a-zA-Z0-9\s,.-]{5,}$"
+    valid = bool(re.match(pattern, address))
+    logging.info(f"Validating city: {address} - {'Valid' if valid else 'Invalid'}")
+    return valid
+
 def is_city_valid(city):
     """
     Description:
