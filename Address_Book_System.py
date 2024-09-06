@@ -2,9 +2,11 @@
   @Author: Prayag Bhoir
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
-  @Last Modified time: 05-09-2024
-  @Title : Address book problem uc4-Ability to delete contact by name
+  @Last Modified time: 06-09-2024
+  @Title : Address book problem uc5-Ability to add multiple person
 """
+from input_validator import validate_user_input, validate_name, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
+
 class Contact:
     def __init__(self, first_name, last_name, city, state, zip_code, phone, email):
         self.first_name = first_name
@@ -84,6 +86,23 @@ class AddressBook:
           None
         """
         self.contacts.append(contact)
+
+    def add_multiple_contacts(self):
+            """
+            Description:
+              Allows the user to add multiple contacts at once.
+
+            Parameters:
+              None
+
+            Returns:
+              None
+            """
+            num_contacts = int(input("How many contacts would you like to add? "))
+            for _ in range(num_contacts):
+                contact = get_contact_details()
+                self.add_contact(contact)
+                print("Contact added successfully!")
 
     def display_contacts(self):
         """
@@ -168,19 +187,76 @@ class AddressBook:
 def get_contact_details():
     """
     Description:
-      Collects contact details from the console and returns a Contact object.
+      Collects contact details from the console and validates the input using the validation module.
+
     Parameters:
       None
+
     Returns:
       Contact: A new Contact object created with user input.
     """
-    first_name = input("Enter First Name: ")
-    last_name = input("Enter Last Name: ")
-    city = input("Enter City: ")
-    state = input("Enter State: ")
-    zip_code = input("Enter ZIP Code: ")
-    phone = input("Enter Phone Number: ")
-    email = input("Enter Email: ")
+    first_name = validate_user_input(
+        "Enter First Name (must start with an uppercase letter and be at least 2 characters long): ",
+        validate_name,
+        "First name is valid.",
+        "Invalid first name. Please try again."
+    )
+    if first_name is None:
+        return
+
+    last_name = validate_user_input(
+        "Enter Last Name (must start with an uppercase letter and be at least 2 characters long): ",
+        validate_name,
+        "Last name is valid.",
+        "Invalid last name. Please try again."
+    )
+    if last_name is None:
+        return
+
+    city = validate_user_input(
+        "Enter City: ",
+        is_city_valid,
+        "City name is valid.",
+        "Invalid city name. Please try again."
+    )
+    if city is None:
+        return
+
+    state = validate_user_input(
+        "Enter State: ",
+        is_state_valid,
+        "State name is valid.",
+        "Invalid state name. Please try again."
+    )
+    if state is None:
+        return
+
+    zip_code = validate_user_input(
+        "Enter ZIP Code: ",
+        is_zip_code_valid,
+        "ZIP code is valid.",
+        "Invalid ZIP code. Please try again."
+    )
+    if zip_code is None:
+        return
+
+    phone = validate_user_input(
+        "Enter Phone Number (format: XX XXXXXXXXXX): ",
+        is_mobile_valid,
+        "Phone number is valid.",
+        "Invalid phone number. Please try again."
+    )
+    if phone is None:
+        return
+
+    email = validate_user_input(
+        "Enter Email: ",
+        is_email_valid,
+        "Email is valid.",
+        "Invalid email address. Please try again."
+    )
+    if email is None:
+        return
 
     return Contact(first_name, last_name, city, state, zip_code, phone, email)
 
@@ -189,34 +265,38 @@ def main():
   address_book = AddressBook()
 
   while True:
-      print("\nAddress Book Menu")
-      print("1. Add New Contact")
-      print("2. Display All Contacts")
-      print("3. Edit a Contact")
-      print("4. Delete a Contact")
-      print("5. Exit")
-      choice = input("Enter your choice (1-5): ")
+        print("\nAddress Book Menu")
+        print("1. Add New Contact")
+        print("2. Add Multiple Contacts")
+        print("3. Display All Contacts")
+        print("4. Edit a Contact")
+        print("5. Delete a Contact")
+        print("6. Exit")
+        choice = input("Enter your choice (1-6): ")
 
-      if choice == '1':
-          # Add new contact
-          contact = get_contact_details()
-          address_book.add_contact(contact)
-          print("Contact added successfully!")
-      elif choice == '2':
-          # Display all contacts
-          address_book.display_contacts()
-      elif choice == '3':
-          # Edit an existing contact
-          address_book.edit_contact_by_name()
-      elif choice == '4':
-          # Delete an existing contact
-          address_book.delete_contact_by_name()
-      elif choice == '5':
-          # Exit the program
-          print("Exiting Address Book.")
-          break
-      else:
-          print("Invalid choice. Please try again.")
+        if choice == '1':
+            # Add new contact
+            contact = get_contact_details()
+            address_book.add_contact(contact)
+            print("Contact added successfully!")
+        elif choice == '2':
+            # Add multiple contacts
+            address_book.add_multiple_contacts()
+        elif choice == '3':
+            # Display all contacts
+            address_book.display_contacts()
+        elif choice == '4':
+            # Edit an existing contact
+            address_book.edit_contact_by_name()
+        elif choice == '5':
+            # Delete an existing contact
+            address_book.delete_contact_by_name()
+        elif choice == '6':
+            # Exit the program
+            print("Exiting Address Book.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 
 if __name__ == "__main__":
