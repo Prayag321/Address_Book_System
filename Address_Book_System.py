@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 06-09-2024
-  @Title : Address book problem uc6-Ability to add multiple Address Book to the system. 
+  @Title : Address book problem uc7-No Duplicate Entry in particular Address Book 
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -90,7 +90,11 @@ class AddressBook:
         Returns:
           None
         """
-        self.contacts.append(contact)
+        if self.find_contact_by_name(contact.first_name, contact.last_name):
+            print(f"A contact with the name {contact.first_name} {contact.last_name} already exists.")
+        else:
+            self.contacts.append(contact)
+            print("Contact added successfully!")
 
     def add_multiple_contacts(self):
             """
@@ -107,7 +111,7 @@ class AddressBook:
             for _ in range(num_contacts):
                 contact = get_contact_details()
                 self.add_contact(contact)
-                print("Contact added successfully!")
+                # print("Contact added successfully!")
 
     def display_contacts(self):
         """
@@ -321,7 +325,7 @@ def main():
                     contact = get_contact_details()
                     if contact:
                         address_book.add_contact(contact)
-                        print("Contact added successfully!")
+                        # print("Contact added successfully!")
                 elif sub_choice == '2':
                     # Add multiple contacts
                     address_book.add_multiple_contacts()

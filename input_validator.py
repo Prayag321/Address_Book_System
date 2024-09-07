@@ -60,7 +60,7 @@ def is_address_valid(address):
     Returns:
       bool: True if the address is valid, otherwise False.
     """
-    pattern = r"^[a-zA-Z0-9\s,.-]{5,}$"
+    pattern = r"^[a-zA-Z0-9,.-]{5,}$"
     valid = bool(re.match(pattern, address))
     logging.info(f"Validating city: {address} - {'Valid' if valid else 'Invalid'}")
     return valid
