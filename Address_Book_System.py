@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 08-09-2024
-  @Title : Address book problem uc13-Read write using file
+  @Title : Address book problem uc114-Read write using csv file
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -327,11 +327,7 @@ def write_contacts_to_file(address_book, filename):
     try:
         with open(filename, 'w') as file:
             for contact in address_book.contacts:
-                file.write(f"Name: {contact.first_name} {contact.last_name}\n")
-                file.write(f"Address: {contact.address}, {contact.city}, {contact.state} {contact.zip_code}\n")
-                file.write(f"Phone: {contact.phone}\n")
-                file.write(f"Email: {contact.email}\n")
-                file.write("\n")  # Separate contacts by a blank line
+                file.write(f"{contact.first_name},{contact.last_name},{contact.address},{contact.city},{contact.state},{contact.zip_code},{contact.phone},{contact.email}\n")
         print(f"Contacts have been written to {filename} successfully!")
     except Exception as e:
         print(f"An error occurred while writing to the file: {e}")
@@ -351,13 +347,12 @@ def read_contacts_from_file(address_book, filename):
     try:
         with open(filename, 'r') as file:
             for line in file:
-                first_name, last_name, address, city, state, zip_code, phone, email = line.strip().split(':')
+                first_name, last_name, address, city, state, zip_code, phone, email = line.strip().split(',')
                 contact = Contact(first_name, last_name, address, city, state, zip_code, phone, email)
                 address_book.add_contact(contact)
         print(f"Contacts have been read from {filename} and added to the address book!")
     except Exception as e:
         print(f"An error occurred while reading from the file: {e}")
-
 
 def get_contact_details():
     """
