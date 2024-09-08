@@ -2,8 +2,8 @@
   @Author: Prayag Bhoir
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
-  @Last Modified time: 06-09-2024
-  @Title : Address book problem uc7-No Duplicate Entry in particular Address Book 
+  @Last Modified time: 07-09-2024
+  @Title : Address book problem uc8-Search Person by city
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -192,6 +192,33 @@ class AddressBook:
           else:
               print("Contact not found.")
 
+def search_person_in_city(address_books):
+    """
+    Description:
+      Searches for a person in a specific city across multiple address books.
+
+    Parameters:
+      address_books (dict): A dictionary of address books with their names as keys.
+
+    Returns:
+      None
+    """
+    city = input("Enter the city to search: ")
+    first_name = input("Enter the first name of the person: ")
+    last_name = input("Enter the last name of the person: ")
+
+    found = False
+
+    for book_name, address_book in address_books.items():
+        for contact in address_book.contacts:
+            if contact.first_name == first_name and contact.last_name == last_name and contact.city == city:
+                print(f"\nPerson found in Address Book '{book_name}':")
+                print(contact)
+                found = True
+
+    if not found:
+        print(f"No person named {first_name} {last_name} found in city {city} across all address books.")
+
 
 def get_contact_details():
     """
@@ -285,8 +312,9 @@ def main():
         print("\nMain Menu")
         print("1. Add New Address Book")
         print("2. Select Address Book")
-        print("3. Exit")
-        choice = input("Enter your choice (1-3): ")
+        print("3. Search Person in City Across Address Books")
+        print("4. Exit")
+        choice = input("Enter your choice (1-4): ")
 
         if choice == '1':
             # Add new address book
@@ -299,9 +327,6 @@ def main():
                 print(f"Address book '{name}' created successfully!")
 
         elif choice == '2':
-            for key, _ in address_books.items():
-                print(key)
-                # print(address_books[key].__dict__1)
             # Select an address book
             name = input("Enter the name of the address book to select: ")
             if name not in address_books:
@@ -325,7 +350,7 @@ def main():
                     contact = get_contact_details()
                     if contact:
                         address_book.add_contact(contact)
-                        # print("Contact added successfully!")
+                        print("Contact added successfully!")
                 elif sub_choice == '2':
                     # Add multiple contacts
                     address_book.add_multiple_contacts()
@@ -343,12 +368,19 @@ def main():
                     break
                 else:
                     print("Invalid choice. Please try again.")
+
         elif choice == '3':
+            # Search for a person in a city across multiple address books
+            search_person_in_city(address_books)
+
+        elif choice == '4':
             # Exit the program
             print("Exiting Address Book System.")
             break
+
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
