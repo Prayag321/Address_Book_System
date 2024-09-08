@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 08-09-2024
-  @Title : Address book problem uc12-sort by city
+  @Title : Address book problem uc13-Read write using file
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -312,6 +312,53 @@ def sort_contacts_by_city(address_book):
         for idx, contact in enumerate(sorted_contacts, start=1):
             print(f"\nContact {idx}: {contact}")
 
+def write_contacts_to_file(address_book, filename):
+    """
+    Description:
+      Writes the contacts of the address book to a file.
+
+    Parameters:
+      address_book (AddressBook): The address book to save.
+      filename (str): The name of the file to save the contacts.
+
+    Returns:
+      None
+    """
+    try:
+        with open(filename, 'w') as file:
+            for contact in address_book.contacts:
+                file.write(f"Name: {contact.first_name} {contact.last_name}\n")
+                file.write(f"Address: {contact.address}, {contact.city}, {contact.state} {contact.zip_code}\n")
+                file.write(f"Phone: {contact.phone}\n")
+                file.write(f"Email: {contact.email}\n")
+                file.write("\n")  # Separate contacts by a blank line
+        print(f"Contacts have been written to {filename} successfully!")
+    except Exception as e:
+        print(f"An error occurred while writing to the file: {e}")
+
+def read_contacts_from_file(address_book, filename):
+    """
+    Description:
+      Reads contacts from a file and adds them to the address book.
+
+    Parameters:
+      address_book (AddressBook): The address book to add the contacts.
+      filename (str): The name of the file to read the contacts.
+
+    Returns:
+      None
+    """
+    try:
+        with open(filename, 'r') as file:
+            for line in file:
+                first_name, last_name, address, city, state, zip_code, phone, email = line.strip().split(':')
+                contact = Contact(first_name, last_name, address, city, state, zip_code, phone, email)
+                address_book.add_contact(contact)
+        print(f"Contacts have been read from {filename} and added to the address book!")
+    except Exception as e:
+        print(f"An error occurred while reading from the file: {e}")
+
+
 def get_contact_details():
     """
     Description:
@@ -407,8 +454,10 @@ def main():
         print("3. Search Person in City Across Address Books")
         print("4. View Persons by State Across Address Books")
         print("5. Count Persons by State Across Address Books")
-        print("6. Exit")
-        choice = input("Enter your choice (1-6): ")
+        print("6. Read Contacts from File")
+        print("7. Write Contacts to File")
+        print("8. Exit")
+        choice = input("Enter your choice (1-8): ")
 
         if choice == '1':
             # Add new address book
@@ -485,13 +534,30 @@ def main():
             count_persons_by_state(address_books)
 
         elif choice == '6':
+            # Read contacts from file
+            name = input("Enter the name of the address book to add the contacts: ")
+            if name not in address_books:
+                print("Address book not found.")
+            else:
+                filename = input("Enter the filename to read the contacts from: ")
+                read_contacts_from_file(address_books[name], filename)
+
+        elif choice == '7':
+            # Write contacts to file
+            name = input("Enter the name of the address book to write the contacts: ")
+            if name not in address_books:
+                print("Address book not found.")
+            else:
+                filename = input("Enter the filename to write the contacts to: ")
+                write_contacts_to_file(address_books[name], filename)
+
+        elif choice == '8':
             # Exit the program
             print("Exiting Address Book System.")
             break
 
         else:
-            print("Invalid choice. Please try again.")
-            
+            print("Invalid choice. Please try again.")  
             
 if __name__ == "__main__":
     main()
