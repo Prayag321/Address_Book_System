@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 08-09-2024
-  @Title : Address book problem uc10-Count Person by state
+  @Title : Address book problem uc11-sort by name
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -272,6 +272,25 @@ def count_persons_by_state(address_books):
     else:
         print(f"No persons found in state {state} across all address books.")
 
+def sort_contacts_by_name(address_book):
+    """
+    Description:
+      Sorts the contacts in the address book alphabetically by the person's first and last name.
+
+    Parameters:
+      address_book (AddressBook): The address book instance whose contacts will be sorted.
+
+    Returns:
+      None
+    """
+    if not address_book.contacts:
+        print("Address book is empty.")
+    else:
+        # Sort contacts based on first name, then last name
+        sorted_contacts = sorted(address_book.contacts, key=lambda contact: (contact.first_name, contact.last_name))
+        print("\nContacts sorted alphabetically by name:")
+        for idx, contact in enumerate(sorted_contacts, start=1):
+            print(f"\nContact {idx}: {contact}")
 
 def get_contact_details():
     """
@@ -399,15 +418,15 @@ def main():
                 print("3. Display All Contacts")
                 print("4. Edit a Contact")
                 print("5. Delete a Contact")
-                print("6. Back to Main Menu")
-                sub_choice = input("Enter your choice (1-6): ")
+                print("6. Sort Contacts Alphabetically by Name")
+                print("7. Back to Main Menu")
+                sub_choice = input("Enter your choice (1-7): ")
 
                 if sub_choice == '1':
                     # Add new contact
                     contact = get_contact_details()
                     if contact:
                         address_book.add_contact(contact)
-                        # print("Contact added successfully!")
                 elif sub_choice == '2':
                     # Add multiple contacts
                     address_book.add_multiple_contacts()
@@ -421,6 +440,9 @@ def main():
                     # Delete an existing contact
                     address_book.delete_contact_by_name()
                 elif sub_choice == '6':
+                    # Sort contacts alphabetically by name
+                    sort_contacts_by_name(address_book)
+                elif sub_choice == '7':
                     # Back to main menu
                     break
                 else:
@@ -445,5 +467,7 @@ def main():
 
         else:
             print("Invalid choice. Please try again.")
+
+            
 if __name__ == "__main__":
     main()
