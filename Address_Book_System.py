@@ -2,8 +2,8 @@
   @Author: Prayag Bhoir
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
-  @Last Modified time: 07-09-2024
-  @Title : Address book problem uc8-Search Person by city
+  @Last Modified time: 08-09-2024
+  @Title : Address book problem uc9-view Person by state
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -128,7 +128,7 @@ class AddressBook:
             print("Address book is empty.")
         else:
             for idx, contact in enumerate(self.contacts, start=1):
-                print(f"Contact {idx}: {contact}")
+                print(f"\nContact {idx}: {contact}")
 
     def find_contact_by_name(self, first_name, last_name):
         """
@@ -218,6 +218,33 @@ def search_person_in_city(address_books):
 
     if not found:
         print(f"No person named {first_name} {last_name} found in city {city} across all address books.")
+
+def view_persons_by_state(address_books):
+    """
+    Description:
+      Displays all persons residing in a specific state across all address books.
+
+    Parameters:
+      address_books (dict): A dictionary of address books with their names as keys.
+
+    Returns:
+      None
+    """
+    state = input("Enter the state to search: ")
+
+    found = False
+
+    for book_name, address_book in address_books.items():
+        for contact in address_book.contacts:
+            if contact.state == state:
+                if not found:
+                    print(f"\nPeople found in the state '{state}':")
+                print(f"\nIn Address Book '{book_name}':")
+                print(contact)
+                found = True
+
+    if not found:
+        print(f"No persons found in state {state} across all address books.")
 
 
 def get_contact_details():
@@ -313,8 +340,9 @@ def main():
         print("1. Add New Address Book")
         print("2. Select Address Book")
         print("3. Search Person in City Across Address Books")
-        print("4. Exit")
-        choice = input("Enter your choice (1-4): ")
+        print("4. View Persons by State Across Address Books")
+        print("5. Exit")
+        choice = input("Enter your choice (1-5): ")
 
         if choice == '1':
             # Add new address book
@@ -327,6 +355,8 @@ def main():
                 print(f"Address book '{name}' created successfully!")
 
         elif choice == '2':
+            for key, _ in address_books.items():
+                print(key)
             # Select an address book
             name = input("Enter the name of the address book to select: ")
             if name not in address_books:
@@ -350,7 +380,7 @@ def main():
                     contact = get_contact_details()
                     if contact:
                         address_book.add_contact(contact)
-                        print("Contact added successfully!")
+                        # print("Contact added successfully!")
                 elif sub_choice == '2':
                     # Add multiple contacts
                     address_book.add_multiple_contacts()
@@ -374,13 +404,16 @@ def main():
             search_person_in_city(address_books)
 
         elif choice == '4':
+            # View persons by state across multiple address books
+            view_persons_by_state(address_books)
+
+        elif choice == '5':
             # Exit the program
             print("Exiting Address Book System.")
             break
 
         else:
             print("Invalid choice. Please try again.")
-
 
 if __name__ == "__main__":
     main()
