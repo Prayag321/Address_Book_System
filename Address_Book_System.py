@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 08-09-2024
-  @Title : Address book problem uc9-view Person by state
+  @Title : Address book problem uc10-Count Person by state
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -246,6 +246,32 @@ def view_persons_by_state(address_books):
     if not found:
         print(f"No persons found in state {state} across all address books.")
 
+def count_persons_by_state(address_books):
+    """
+    Description:
+      Counts the number of persons residing in a specific state across all address books.
+
+    Parameters:
+      address_books (dict): A dictionary of address books with their names as keys.
+
+    Returns:
+      None
+    """
+    state = input("Enter the state to count persons: ")
+
+    total_count = 0
+
+    for book_name, address_book in address_books.items():
+        state_count = sum(1 for contact in address_book.contacts if contact.state == state)
+        if state_count > 0:
+            print(f"In Address Book '{book_name}', {state_count} persons found in the state '{state}'.")
+        total_count += state_count
+
+    if total_count > 0:
+        print(f"\nTotal number of persons in state '{state}' across all address books: {total_count}")
+    else:
+        print(f"No persons found in state {state} across all address books.")
+
 
 def get_contact_details():
     """
@@ -341,8 +367,9 @@ def main():
         print("2. Select Address Book")
         print("3. Search Person in City Across Address Books")
         print("4. View Persons by State Across Address Books")
-        print("5. Exit")
-        choice = input("Enter your choice (1-5): ")
+        print("5. Count Persons by State Across Address Books")
+        print("6. Exit")
+        choice = input("Enter your choice (1-6): ")
 
         if choice == '1':
             # Add new address book
@@ -408,12 +435,15 @@ def main():
             view_persons_by_state(address_books)
 
         elif choice == '5':
+            # Count persons by state across multiple address books
+            count_persons_by_state(address_books)
+
+        elif choice == '6':
             # Exit the program
             print("Exiting Address Book System.")
             break
 
         else:
             print("Invalid choice. Please try again.")
-
 if __name__ == "__main__":
     main()
