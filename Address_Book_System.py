@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 08-09-2024
-  @Title : Address book problem uc11-sort by name
+  @Title : Address book problem uc12-sort by city
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -292,6 +292,26 @@ def sort_contacts_by_name(address_book):
         for idx, contact in enumerate(sorted_contacts, start=1):
             print(f"\nContact {idx}: {contact}")
 
+def sort_contacts_by_city(address_book):
+    """
+    Description:
+      Sorts the contacts in the address book by city name in alphabetical order.
+
+    Parameters:
+      address_book (AddressBook): The address book instance whose contacts will be sorted.
+
+    Returns:
+      None
+    """
+    if not address_book.contacts:
+        print("Address book is empty.")
+    else:
+        # Sort contacts based on city name
+        sorted_contacts = sorted(address_book.contacts, key=lambda contact: contact.city)
+        print("\nContacts sorted by City:")
+        for idx, contact in enumerate(sorted_contacts, start=1):
+            print(f"\nContact {idx}: {contact}")
+
 def get_contact_details():
     """
     Description:
@@ -419,8 +439,9 @@ def main():
                 print("4. Edit a Contact")
                 print("5. Delete a Contact")
                 print("6. Sort Contacts Alphabetically by Name")
-                print("7. Back to Main Menu")
-                sub_choice = input("Enter your choice (1-7): ")
+                print("7. Sort Contacts by City")
+                print("8. Back to Main Menu")
+                sub_choice = input("Enter your choice (1-8): ")
 
                 if sub_choice == '1':
                     # Add new contact
@@ -443,6 +464,9 @@ def main():
                     # Sort contacts alphabetically by name
                     sort_contacts_by_name(address_book)
                 elif sub_choice == '7':
+                    # Sort contacts by City
+                    sort_contacts_by_city(address_book)
+                elif sub_choice == '8':
                     # Back to main menu
                     break
                 else:
@@ -467,7 +491,7 @@ def main():
 
         else:
             print("Invalid choice. Please try again.")
-
+            
             
 if __name__ == "__main__":
     main()
