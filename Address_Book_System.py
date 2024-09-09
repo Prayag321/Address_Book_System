@@ -3,7 +3,7 @@
   @Date: 05-09-2024
   @Last Modified by: Prayag Bhoir
   @Last Modified time: 09-09-2024
-  @Title : Address book problem uc14-Read write using csv file
+  @Title : Address book problem uc15-Read write using json file
 """
 from input_validator import validate_user_input, validate_name,is_address_valid, is_email_valid, is_mobile_valid, is_city_valid, is_state_valid, is_zip_code_valid
 
@@ -311,48 +311,70 @@ def sort_contacts_by_city(address_book):
         print("\nContacts sorted by City:")
         for idx, contact in enumerate(sorted_contacts, start=1):
             print(f"\nContact {idx}: {contact}")
+import json
 
 def write_contacts_to_file(address_book, filename):
     """
     Description:
-      Writes the contacts of the address book to a file.
+      Writes the contacts of the address book to a JSON file.
 
     Parameters:
       address_book (AddressBook): The address book to save.
-      filename (str): The name of the file to save the contacts.
+      filename (str): The name of the JSON file to save the contacts.
 
     Returns:
       None
     """
     try:
-        with open(filename, 'w') as file:
-            for contact in address_book.contacts:
-                file.write(f"{contact.first_name},{contact.last_name},{contact.address},{contact.city},{contact.state},{contact.zip_code},{contact.phone},{contact.email}\n")
+        contacts_list = [
+            {
+                'first_name': contact.first_name,
+                'last_name': contact.last_name,
+                'address': contact.address,
+                'city': contact.city,
+                'state': contact.state,
+                'zip_code': contact.zip_code,
+                'phone': contact.phone,
+                'email': contact.email
+            }
+            for contact in address_book.contacts
+        ]
+        with open(filename, 'w') as json_file:
+            json.dump(contacts_list, json_file, indent=4)
         print(f"Contacts have been written to {filename} successfully!")
     except Exception as e:
-        print(f"An error occurred while writing to the file: {e}")
+        print(f"An error occurred while writing to the JSON file: {e}")
 
 def read_contacts_from_file(address_book, filename):
     """
     Description:
-      Reads contacts from a file and adds them to the address book.
+      Reads contacts from a JSON file and adds them to the address book.
 
     Parameters:
       address_book (AddressBook): The address book to add the contacts.
-      filename (str): The name of the file to read the contacts.
+      filename (str): The name of the JSON file to read the contacts.
 
     Returns:
       None
     """
     try:
-        with open(filename, 'r') as file:
-            for line in file:
-                first_name, last_name, address, city, state, zip_code, phone, email = line.strip().split(',')
-                contact = Contact(first_name, last_name, address, city, state, zip_code, phone, email)
+        with open(filename, 'r') as json_file:
+            contacts_list = json.load(json_file)
+            for contact_data in contacts_list:
+                contact = Contact(
+                    contact_data['first_name'],
+                    contact_data['last_name'],
+                    contact_data['address'],
+                    contact_data['city'],
+                    contact_data['state'],
+                    contact_data['zip_code'],
+                    contact_data['phone'],
+                    contact_data['email']
+                )
                 address_book.add_contact(contact)
         print(f"Contacts have been read from {filename} and added to the address book!")
     except Exception as e:
-        print(f"An error occurred while reading from the file: {e}")
+        print(f"An error occurred while reading from the JSON file: {e}")
 
 def get_contact_details():
     """
